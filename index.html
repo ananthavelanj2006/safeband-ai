@@ -31,7 +31,7 @@
       width: 100%;
       max-width: 430px;
       background: #1f2937;
-      padding: 30px;
+      padding: 28px;
       border-radius: 25px;
       text-align: center;
     }
@@ -42,46 +42,54 @@
 
     .subtitle {
       color: #d1d5db;
-      margin-bottom: 25px;
+      margin-bottom: 20px;
     }
 
     input {
       width: 100%;
-      padding: 15px;
-      margin: 8px 0;
+      padding: 14px;
+      margin: 6px 0;
       border: none;
       border-radius: 10px;
       font-size: 16px;
     }
 
-    .login-btn {
+    button {
+      cursor: pointer;
+    }
+
+    .primary {
       width: 100%;
       padding: 15px;
-      margin-top: 15px;
+      margin-top: 12px;
       border: none;
       border-radius: 10px;
       background: #2563eb;
       color: white;
       font-size: 18px;
       font-weight: bold;
-      cursor: pointer;
     }
 
-    .login-btn:active {
-      transform: scale(0.98);
+    .secondary {
+      background: transparent;
+      border: none;
+      color: #60a5fa;
+      margin-top: 15px;
+      font-size: 15px;
     }
 
-    #loginMessage {
+    #message {
       margin-top: 15px;
       color: #fbbf24;
     }
 
+    #registerScreen,
     #appScreen {
       display: none;
     }
 
-    #studentName {
-      font-size: 27px;
+    #userName {
+      font-size: 28px;
       font-weight: bold;
       margin: 20px 0;
     }
@@ -102,7 +110,6 @@
       color: white;
       font-size: 30px;
       font-weight: bold;
-      cursor: pointer;
       box-shadow: 0 0 35px rgba(220, 38, 38, 0.6);
     }
 
@@ -113,7 +120,7 @@
     .info {
       margin-top: 25px;
       background: #374151;
-      padding: 20px;
+      padding: 18px;
       border-radius: 15px;
       line-height: 2;
       text-align: left;
@@ -121,8 +128,8 @@
 
     .map {
       display: none;
-      margin-top: 10px;
-      padding: 10px 15px;
+      margin-top: 12px;
+      padding: 10px;
       background: #2563eb;
       color: white;
       text-decoration: none;
@@ -132,12 +139,11 @@
 
     .logout {
       margin-top: 20px;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 8px;
       background: #6b7280;
       color: white;
-      border: none;
-      padding: 10px 20px;
-      border-radius: 8px;
-      cursor: pointer;
     }
 
   </style>
@@ -146,149 +152,439 @@
 
 <body>
 
-  <!-- LOGIN SCREEN -->
 
-  <div class="card" id="loginScreen">
+<!-- ================= LOGIN ================= -->
 
-    <h1>🛡️ SafeBand AI</h1>
+<div class="card" id="loginScreen">
 
-    <div class="subtitle">
-      Women Safety Emergency System
-    </div>
+  <h1>🛡️ SafeBand AI</h1>
 
-    <input
-      type="email"
-      id="email"
-      placeholder="Email"
+  <div class="subtitle">
+    Women Safety Emergency System
+  </div>
+
+  <input
+    type="email"
+    id="loginEmail"
+    placeholder="Email"
+  >
+
+  <input
+    type="password"
+    id="loginPassword"
+    placeholder="Password"
+  >
+
+  <button
+    class="primary"
+    onclick="login()"
+  >
+    🔐 LOGIN
+  </button>
+
+  <button
+    class="secondary"
+    onclick="showRegister()"
+  >
+    New user? Create Account
+  </button>
+
+  <div id="loginMessage"></div>
+
+</div>
+
+
+<!-- ================= REGISTER ================= -->
+
+<div class="card" id="registerScreen">
+
+  <h1>🛡️ SafeBand AI</h1>
+
+  <div class="subtitle">
+    Create your account
+  </div>
+
+  <input
+    type="text"
+    id="name"
+    placeholder="Your Name"
+  >
+
+  <input
+    type="email"
+    id="email"
+    placeholder="Your Email"
+  >
+
+  <input
+    type="password"
+    id="password"
+    placeholder="Create Password"
+  >
+
+  <input
+    type="text"
+    id="parentName"
+    placeholder="Parent / Emergency Contact Name"
+  >
+
+  <input
+    type="tel"
+    id="parentPhone"
+    placeholder="Parent Phone Number"
+  >
+
+  <input
+    type="email"
+    id="parentEmail"
+    placeholder="Parent Email"
+  >
+
+  <button
+    class="primary"
+    onclick="registerUser()"
+  >
+    ✅ CREATE ACCOUNT
+  </button>
+
+  <button
+    class="secondary"
+    onclick="showLogin()"
+  >
+    Already have account? Login
+  </button>
+
+  <div id="registerMessage"></div>
+
+</div>
+
+
+<!-- ================= SOS APP ================= -->
+
+<div class="card" id="appScreen">
+
+  <h1>🛡️ SafeBand AI</h1>
+
+  <div id="userName">
+    Loading...
+  </div>
+
+  <div id="status">
+    🟢 SAFE
+  </div>
+
+  <button
+    id="sos"
+    onclick="sendSOS()"
+  >
+    🚨<br>SOS
+  </button>
+
+  <div class="info">
+
+    📅 Date:
+    <span id="date">---</span>
+
+    <br>
+
+    ⏰ Time:
+    <span id="time">---</span>
+
+    <br>
+
+    📍 GPS:
+    <span id="gps">Waiting...</span>
+
+    <a
+      id="mapLink"
+      class="map"
+      href="#"
+      target="_blank"
     >
-
-    <input
-      type="password"
-      id="password"
-      placeholder="Password"
-    >
-
-    <button
-      class="login-btn"
-      onclick="login()"
-    >
-      🔐 LOGIN
-    </button>
-
-    <div id="loginMessage"></div>
+      🗺️ Open Location
+    </a>
 
   </div>
 
+  <button
+    class="logout"
+    onclick="logout()"
+  >
+    Logout
+  </button>
 
-  <!-- SOS SCREEN -->
-
-  <div class="card" id="appScreen">
-
-    <h1>🛡️ SafeBand AI</h1>
-
-    <div id="studentName">
-      Loading...
-    </div>
-
-    <div id="status">
-      🟢 SAFE
-    </div>
-
-    <button
-      id="sos"
-      onclick="sendSOS()"
-    >
-      🚨<br>SOS
-    </button>
-
-    <div class="info">
-
-      📅 Date:
-      <span id="date">---</span>
-
-      <br>
-
-      ⏰ Time:
-      <span id="time">---</span>
-
-      <br>
-
-      📍 GPS:
-      <span id="gps">Waiting...</span>
-
-      <br>
-
-      <a
-        id="mapLink"
-        class="map"
-        href="#"
-        target="_blank"
-      >
-        🗺️ Open Location
-      </a>
-
-    </div>
-
-    <button
-      class="logout"
-      onclick="logout()"
-    >
-      Logout
-    </button>
-
-  </div>
+</div>
 
 
 <script>
 
+
+/* =========================================
+   SUPABASE
+========================================= */
+
+const SUPABASE_URL =
+  "https://frevekxhlarzhqupacyn.supabase.co";
+
+
+const SUPABASE_KEY =
+  "sb_publishable_b48kPa-jjOBTpmtq5gv0BQ_37ZV6pC9";
+
+
+const supabaseClient =
+  window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_KEY
+  );
+
+
+let currentStudentId = null;
+
+
+/* =========================================
+   SHOW LOGIN
+========================================= */
+
+function showLogin() {
+
+  document.getElementById("registerScreen")
+    .style.display = "none";
+
+  document.getElementById("appScreen")
+    .style.display = "none";
+
+  document.getElementById("loginScreen")
+    .style.display = "block";
+}
+
+
+/* =========================================
+   SHOW REGISTER
+========================================= */
+
+function showRegister() {
+
+  document.getElementById("loginScreen")
+    .style.display = "none";
+
+  document.getElementById("appScreen")
+    .style.display = "none";
+
+  document.getElementById("registerScreen")
+    .style.display = "block";
+}
+
+
+/* =========================================
+   REGISTER
+========================================= */
+
+async function registerUser() {
+
+  const name =
+    document.getElementById("name")
+      .value.trim();
+
+  const email =
+    document.getElementById("email")
+      .value.trim();
+
+  const password =
+    document.getElementById("password")
+      .value;
+
+  const parentName =
+    document.getElementById("parentName")
+      .value.trim();
+
+  const parentPhone =
+    document.getElementById("parentPhone")
+      .value.trim();
+
+  const parentEmail =
+    document.getElementById("parentEmail")
+      .value.trim();
+
+
+  if (
+    !name ||
+    !email ||
+    !password ||
+    !parentName ||
+    !parentPhone ||
+    !parentEmail
+  ) {
+
+    document.getElementById("registerMessage")
+      .innerText =
+      "⚠️ எல்லா details-யும் fill பண்ணுங்க.";
+
+    return;
+  }
+
+
+  document.getElementById("registerMessage")
+    .innerText =
+    "Creating account...";
+
+
+  /* Create Auth account */
+
+  const { data, error } =
+    await supabaseClient.auth.signUp({
+
+      email: email,
+
+      password: password
+
+    });
+
+
+  if (error) {
+
+    console.error(error);
+
+    document.getElementById("registerMessage")
+      .innerText =
+      "❌ " + error.message;
+
+    return;
+  }
+
+
   /*
-   * SUPABASE
+   * If email confirmation is enabled,
+   * user may need to confirm email first.
    */
 
-  const SUPABASE_URL =
-    "https://frevekxhlarzhqupacyn.supabase.co";
+  if (!data.user) {
 
-  const SUPABASE_KEY =
-    "sb_publishable_b48kPa-jjOBTpmtq5gv0BQ_37ZV6pC9";
+    document.getElementById("registerMessage")
+      .innerText =
+      "⚠️ Account create ஆகவில்லை.";
+
+    return;
+  }
 
 
-  const supabaseClient =
-    window.supabase.createClient(
-      SUPABASE_URL,
-      SUPABASE_KEY
-    );
+  /* Save student details */
+
+  const { data: student, error: studentError } =
+    await supabaseClient
+      .from("students")
+      .insert({
+
+        name: name,
+
+        parent_email: email,
+
+        phone: parentPhone
+
+      })
+      .select()
+      .single();
+
+
+  if (studentError) {
+
+    console.error(studentError);
+
+    document.getElementById("registerMessage")
+      .innerText =
+      "❌ Student details save failed.";
+
+    return;
+  }
+
+
+  currentStudentId =
+    student.id;
+
+
+  /* Save emergency contact */
+
+  const { error: contactError } =
+    await supabaseClient
+      .from("emergency_contacts")
+      .insert({
+
+        student_id: student.id,
+
+        name: parentName,
+
+        phone: parentPhone,
+
+        email: parentEmail,
+
+        relationship: "Parent"
+
+      });
+
+
+  if (contactError) {
+
+    console.error(contactError);
+
+    document.getElementById("registerMessage")
+      .innerText =
+      "⚠️ Account created, contact save failed.";
+
+    return;
+  }
 
 
   /*
-   * LOGIN
+   * Automatic login if session exists
    */
 
-  async function login() {
+  if (data.session) {
 
-    const email =
-      document.getElementById("email").value.trim();
+    await showApp(data.user);
 
-    const password =
-      document.getElementById("password").value;
+  } else {
+
+    document.getElementById("registerMessage")
+      .innerText =
+      "✅ Account created! Email confirm செய்து Login பண்ணுங்க.";
+
+  }
+
+}
 
 
-    if (!email || !password) {
+/* =========================================
+   LOGIN
+========================================= */
 
-      document.getElementById("loginMessage")
-        .innerText =
-        "⚠️ Email and password enter pannunga.";
+async function login() {
 
-      return;
-    }
+  const email =
+    document.getElementById("loginEmail")
+      .value.trim();
 
+  const password =
+    document.getElementById("loginPassword")
+      .value;
+
+
+  if (!email || !password) {
 
     document.getElementById("loginMessage")
       .innerText =
-      "Logging in...";
+      "⚠️ Email and password enter pannunga.";
+
+    return;
+  }
 
 
-    const { data, error } =
-      await supabaseClient.auth.signInWithPassword({
+  document.getElementById("loginMessage")
+    .innerText =
+    "Logging in...";
+
+
+  const { data, error } =
+    await supabaseClient.auth
+      .signInWithPassword({
 
         email: email,
 
@@ -297,252 +593,283 @@
       });
 
 
-    if (error) {
+  if (error) {
 
-      console.error(error);
+    console.error(error);
 
-      document.getElementById("loginMessage")
+    document.getElementById("loginMessage")
+      .innerText =
+      "❌ " + error.message;
+
+    return;
+  }
+
+
+  await showApp(data.user);
+
+}
+
+
+/* =========================================
+   SHOW SOS SCREEN
+========================================= */
+
+async function showApp(user) {
+
+  document.getElementById("loginScreen")
+    .style.display = "none";
+
+  document.getElementById("registerScreen")
+    .style.display = "none";
+
+  document.getElementById("appScreen")
+    .style.display = "block";
+
+
+  const { data, error } =
+    await supabaseClient
+      .from("students")
+      .select("id, name")
+      .eq("parent_email", user.email)
+      .limit(1)
+      .maybeSingle();
+
+
+  if (!error && data) {
+
+    currentStudentId =
+      data.id;
+
+    document.getElementById("userName")
+      .innerText =
+      data.name;
+
+  } else {
+
+    document.getElementById("userName")
+      .innerText =
+      user.email;
+
+  }
+
+}
+
+
+/* =========================================
+   SOS
+========================================= */
+
+async function sendSOS() {
+
+  const status =
+    document.getElementById("status");
+
+
+  status.innerText =
+    "🔴 EMERGENCY ACTIVE";
+
+  status.style.color =
+    "#ef4444";
+
+
+  const now =
+    new Date();
+
+
+  const date =
+    now.toISOString()
+      .split("T")[0];
+
+
+  const time =
+    now.toTimeString()
+      .split(" ")[0];
+
+
+  document.getElementById("date")
+    .innerText =
+    date;
+
+
+  document.getElementById("time")
+    .innerText =
+    time;
+
+
+  if (!navigator.geolocation) {
+
+    alert("❌ GPS supported இல்லை.");
+
+    return;
+  }
+
+
+  navigator.geolocation.getCurrentPosition(
+
+    async function(position) {
+
+      const latitude =
+        position.coords.latitude;
+
+      const longitude =
+        position.coords.longitude;
+
+
+      document.getElementById("gps")
         .innerText =
-        "❌ " + error.message;
+        latitude.toFixed(6)
+        + ", "
+        + longitude.toFixed(6);
 
-      return;
-    }
 
+      /* Google Maps */
 
-    await showApp(data.user);
+      const mapURL =
+        "https://www.google.com/maps?q="
+        + latitude
+        + ","
+        + longitude;
 
-  }
 
+      const mapLink =
+        document.getElementById("mapLink");
 
-  /*
-   * SHOW SOS APP
-   */
 
-  async function showApp(user) {
+      mapLink.href =
+        mapURL;
 
-    document.getElementById("loginScreen")
-      .style.display = "none";
 
-    document.getElementById("appScreen")
-      .style.display = "block";
+      mapLink.style.display =
+        "block";
 
 
-    /*
-     * Get student name using email
-     */
+      /* Save emergency */
 
-    const { data, error } =
-      await supabaseClient
-        .from("students")
-        .select("id, name")
-        .eq("parent_email", user.email)
-        .limit(1)
-        .maybeSingle();
-
-
-    if (!error && data) {
-
-      document.getElementById("studentName")
-        .innerText = data.name;
-
-      window.studentId = data.id;
-
-    } else {
-
-      document.getElementById("studentName")
-        .innerText = user.email;
-
-      window.studentId = 1;
-
-    }
-
-  }
-
-
-  /*
-   * SOS
-   */
-
-  async function sendSOS() {
-
-    const status =
-      document.getElementById("status");
-
-    status.innerText =
-      "🔴 EMERGENCY ACTIVE";
-
-    status.style.color =
-      "#ef4444";
-
-
-    const now = new Date();
-
-    const date =
-      now.toISOString().split("T")[0];
-
-    const time =
-      now.toTimeString().split(" ")[0];
-
-
-    document.getElementById("date")
-      .innerText = date;
-
-    document.getElementById("time")
-      .innerText = time;
-
-
-    if (!navigator.geolocation) {
-
-      alert("❌ GPS supported இல்லை.");
-
-      return;
-    }
-
-
-    navigator.geolocation.getCurrentPosition(
-
-      async function(position) {
-
-        const latitude =
-          position.coords.latitude;
-
-        const longitude =
-          position.coords.longitude;
-
-
-        document.getElementById("gps")
-          .innerText =
-          latitude.toFixed(6)
-          + ", "
-          + longitude.toFixed(6);
-
-
-        const mapURL =
-          "https://www.google.com/maps?q="
-          + latitude
-          + ","
-          + longitude;
-
-
-        const mapLink =
-          document.getElementById("mapLink");
-
-        mapLink.href = mapURL;
-
-        mapLink.style.display =
-          "block";
-
-
-        /*
-         * SAVE SOS
-         */
-
-        const { error } =
-          await supabaseClient
-            .from("emergency_alerts")
-            .insert({
-
-              student_id:
-                window.studentId,
-
-              latitude:
-                latitude,
-
-              longitude:
-                longitude,
-
-              emergency_date:
-                date,
-
-              emergency_time:
-                time,
-
-              status:
-                "ACTIVE"
-
-            });
-
-
-        if (error) {
-
-          console.error(error);
-
-          alert(
-            "❌ SOS database save failed"
-          );
-
-          return;
-        }
-
+      if (!currentStudentId) {
 
         alert(
-          "🚨 SOS SAVED SUCCESSFULLY!"
+          "❌ Student account not found."
         );
 
-      },
+        return;
+      }
 
 
-      function(error) {
+      const { error } =
+        await supabaseClient
+          .from("emergency_alerts")
+          .insert({
+
+            student_id:
+              currentStudentId,
+
+            latitude:
+              latitude,
+
+            longitude:
+              longitude,
+
+            emergency_date:
+              date,
+
+            emergency_time:
+              time,
+
+            status:
+              "ACTIVE"
+
+          });
+
+
+      if (error) {
 
         console.error(error);
 
         alert(
-          "⚠️ Location permission Allow pannunga."
+          "❌ SOS save failed: "
+          + error.message
         );
 
-      },
-
-
-      {
-
-        enableHighAccuracy: true,
-
-        timeout: 10000,
-
-        maximumAge: 0
-
+        return;
       }
 
-    );
 
-  }
-
-
-  /*
-   * LOGOUT
-   */
-
-  async function logout() {
-
-    await supabaseClient.auth.signOut();
-
-    location.reload();
-
-  }
-
-
-  /*
-   * CHECK EXISTING LOGIN
-   */
-
-  async function checkLogin() {
-
-    const { data } =
-      await supabaseClient.auth.getSession();
-
-
-    if (data.session) {
-
-      await showApp(
-        data.session.user
+      alert(
+        "🚨 SOS SENT!\n\n"
+        + "📍 Location saved\n"
+        + "📅 " + date + "\n"
+        + "⏰ " + time
       );
+
+    },
+
+
+    function(error) {
+
+      console.error(error);
+
+      alert(
+        "⚠️ Location permission Allow pannunga."
+      );
+
+    },
+
+
+    {
+
+      enableHighAccuracy: true,
+
+      timeout: 10000,
+
+      maximumAge: 0
 
     }
 
+  );
+
+}
+
+
+/* =========================================
+   LOGOUT
+========================================= */
+
+async function logout() {
+
+  await supabaseClient.auth.signOut();
+
+  location.reload();
+
+}
+
+
+/* =========================================
+   CHECK LOGIN
+========================================= */
+
+async function checkLogin() {
+
+  const { data } =
+    await supabaseClient.auth.getSession();
+
+
+  if (data.session) {
+
+    await showApp(
+      data.session.user
+    );
+
+  } else {
+
+    showLogin();
+
   }
 
+}
 
-  checkLogin();
+
+checkLogin();
+
 
 </script>
 
