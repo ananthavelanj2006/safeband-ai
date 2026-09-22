@@ -2,395 +2,540 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>SafeBand AI</title>
+<meta charset="UTF-8">
 
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
 
-  <style>
+<title>SafeBand AI</title>
 
-    * {
-      box-sizing: border-box;
-    }
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-    body {
-      margin: 0;
-      min-height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      font-family: Arial, sans-serif;
-      background: #111827;
-      color: white;
-      padding: 20px;
-    }
+<style>
 
-    .card {
-      width: 100%;
-      max-width: 430px;
-      background: #1f2937;
-      padding: 28px;
-      border-radius: 25px;
-      text-align: center;
-    }
+* {
+  box-sizing: border-box;
+}
 
-    h1 {
-      margin-bottom: 5px;
-    }
+body {
 
-    .subtitle {
-      color: #d1d5db;
-      margin-bottom: 20px;
-    }
+  margin: 0;
 
-    input {
-      width: 100%;
-      padding: 14px;
-      margin: 6px 0;
-      border: none;
-      border-radius: 10px;
-      font-size: 16px;
-    }
+  min-height: 100vh;
 
-    button {
-      cursor: pointer;
-    }
+  display: flex;
 
-    .primary {
-      width: 100%;
-      padding: 15px;
-      margin-top: 12px;
-      border: none;
-      border-radius: 10px;
-      background: #2563eb;
-      color: white;
-      font-size: 18px;
-      font-weight: bold;
-    }
+  justify-content: center;
 
-    .secondary {
-      background: transparent;
-      border: none;
-      color: #60a5fa;
-      margin-top: 15px;
-      font-size: 15px;
-    }
+  align-items: center;
 
-    #message {
-      margin-top: 15px;
-      color: #fbbf24;
-    }
+  font-family: Arial, sans-serif;
 
-    #registerScreen,
-    #appScreen {
-      display: none;
-    }
+  background: #111827;
 
-    #userName {
-      font-size: 28px;
-      font-weight: bold;
-      margin: 20px 0;
-    }
+  color: white;
 
-    #status {
-      font-size: 22px;
-      margin: 20px;
-      color: #22c55e;
-      font-weight: bold;
-    }
+  padding: 20px;
+}
 
-    #sos {
-      width: 190px;
-      height: 190px;
-      border-radius: 50%;
-      border: none;
-      background: #dc2626;
-      color: white;
-      font-size: 30px;
-      font-weight: bold;
-      box-shadow: 0 0 35px rgba(220, 38, 38, 0.6);
-    }
+.card {
 
-    #sos:active {
-      transform: scale(0.95);
-    }
+  width: 100%;
 
-    .info {
-      margin-top: 25px;
-      background: #374151;
-      padding: 18px;
-      border-radius: 15px;
-      line-height: 2;
-      text-align: left;
-    }
+  max-width: 430px;
 
-    .map {
-      display: none;
-      margin-top: 12px;
-      padding: 10px;
-      background: #2563eb;
-      color: white;
-      text-decoration: none;
-      border-radius: 8px;
-      text-align: center;
-    }
+  background: #1f2937;
 
-    .logout {
-      margin-top: 20px;
-      padding: 10px 20px;
-      border: none;
-      border-radius: 8px;
-      background: #6b7280;
-      color: white;
-    }
+  padding: 30px;
 
-  </style>
+  border-radius: 25px;
+
+  text-align: center;
+}
+
+h1 {
+
+  margin-bottom: 5px;
+}
+
+.subtitle {
+
+  color: #d1d5db;
+
+  margin-bottom: 25px;
+}
+
+input {
+
+  width: 100%;
+
+  padding: 14px;
+
+  margin: 7px 0;
+
+  border: none;
+
+  border-radius: 10px;
+
+  font-size: 16px;
+}
+
+button {
+
+  cursor: pointer;
+}
+
+.primary {
+
+  width: 100%;
+
+  padding: 15px;
+
+  margin-top: 12px;
+
+  border: none;
+
+  border-radius: 10px;
+
+  background: #2563eb;
+
+  color: white;
+
+  font-size: 18px;
+
+  font-weight: bold;
+}
+
+.secondary {
+
+  margin-top: 15px;
+
+  border: none;
+
+  background: transparent;
+
+  color: #60a5fa;
+
+  font-size: 16px;
+}
+
+.message {
+
+  margin-top: 15px;
+
+  color: #fbbf24;
+
+  line-height: 1.5;
+}
+
+#registerScreen,
+#appScreen {
+
+  display: none;
+}
+
+#userName {
+
+  font-size: 28px;
+
+  font-weight: bold;
+
+  margin: 20px 0;
+}
+
+#status {
+
+  font-size: 22px;
+
+  margin: 20px;
+
+  color: #22c55e;
+
+  font-weight: bold;
+}
+
+#sos {
+
+  width: 190px;
+
+  height: 190px;
+
+  border-radius: 50%;
+
+  border: none;
+
+  background: #dc2626;
+
+  color: white;
+
+  font-size: 30px;
+
+  font-weight: bold;
+
+  box-shadow: 0 0 35px rgba(220,38,38,.6);
+}
+
+#sos:active {
+
+  transform: scale(.95);
+}
+
+.info {
+
+  margin-top: 25px;
+
+  background: #374151;
+
+  padding: 20px;
+
+  border-radius: 15px;
+
+  line-height: 2;
+
+  text-align: left;
+}
+
+.map {
+
+  display: none;
+
+  margin-top: 15px;
+
+  padding: 12px;
+
+  background: #2563eb;
+
+  color: white;
+
+  text-decoration: none;
+
+  border-radius: 8px;
+
+  text-align: center;
+}
+
+.contactButton {
+
+  display: none;
+
+  width: 100%;
+
+  padding: 12px;
+
+  margin-top: 10px;
+
+  border: none;
+
+  border-radius: 8px;
+
+  color: white;
+
+  font-size: 16px;
+
+  text-decoration: none;
+
+  text-align: center;
+}
+
+.sms {
+
+  background: #16a34a;
+}
+
+.email {
+
+  background: #7c3aed;
+}
+
+.logout {
+
+  margin-top: 20px;
+
+  background: #6b7280;
+
+  color: white;
+
+  border: none;
+
+  padding: 10px 20px;
+
+  border-radius: 8px;
+}
+
+</style>
 
 </head>
+
 
 <body>
 
 
-<!-- ================= LOGIN ================= -->
+<!-- LOGIN -->
 
 <div class="card" id="loginScreen">
 
-  <h1>🛡️ SafeBand AI</h1>
+<h1>🛡️ SafeBand AI</h1>
 
-  <div class="subtitle">
-    Women Safety Emergency System
-  </div>
+<div class="subtitle">
+Women Safety Emergency System
+</div>
 
-  <input
-    type="email"
-    id="loginEmail"
-    placeholder="Email"
-  >
+<input
+type="email"
+id="loginEmail"
+placeholder="Email">
 
-  <input
-    type="password"
-    id="loginPassword"
-    placeholder="Password"
-  >
+<input
+type="password"
+id="loginPassword"
+placeholder="Password">
 
-  <button
-    class="primary"
-    onclick="login()"
-  >
-    🔐 LOGIN
-  </button>
+<button
+class="primary"
+onclick="login()">
 
-  <button
-    class="secondary"
-    onclick="showRegister()"
-  >
-    New user? Create Account
-  </button>
+🔐 LOGIN
 
-  <div id="loginMessage"></div>
+</button>
+
+<button
+class="secondary"
+onclick="showRegister()">
+
+New user? Create Account
+
+</button>
+
+<div
+id="loginMessage"
+class="message">
+</div>
 
 </div>
 
 
-<!-- ================= REGISTER ================= -->
+
+<!-- REGISTER -->
 
 <div class="card" id="registerScreen">
 
-  <h1>🛡️ SafeBand AI</h1>
+<h1>🛡️ SafeBand AI</h1>
 
-  <div class="subtitle">
-    Create your account
-  </div>
+<div class="subtitle">
+Create your account
+</div>
 
-  <input
-    type="text"
-    id="name"
-    placeholder="Your Name"
-  >
+<input
+id="regName"
+placeholder="Your Name">
 
-  <input
-    type="email"
-    id="email"
-    placeholder="Your Email"
-  >
+<input
+type="email"
+id="regEmail"
+placeholder="Your Email">
 
-  <input
-    type="password"
-    id="password"
-    placeholder="Create Password"
-  >
+<input
+type="password"
+id="regPassword"
+placeholder="Create Password">
 
-  <input
-    type="text"
-    id="parentName"
-    placeholder="Parent / Emergency Contact Name"
-  >
+<input
+id="parentName"
+placeholder="Parent Name">
 
-  <input
-    type="tel"
-    id="parentPhone"
-    placeholder="Parent Phone Number"
-  >
+<input
+id="parentPhone"
+placeholder="Parent Phone Number">
 
-  <input
-    type="email"
-    id="parentEmail"
-    placeholder="Parent Email"
-  >
+<input
+type="email"
+id="parentEmail"
+placeholder="Parent Email">
 
-  <button
-    class="primary"
-    onclick="registerUser()"
-  >
-    ✅ CREATE ACCOUNT
-  </button>
+<button
+class="primary"
+onclick="register()">
 
-  <button
-    class="secondary"
-    onclick="showLogin()"
-  >
-    Already have account? Login
-  </button>
+✅ CREATE ACCOUNT
 
-  <div id="registerMessage"></div>
+</button>
+
+<button
+class="secondary"
+onclick="showLogin()">
+
+Already have account? Login
+
+</button>
+
+<div
+id="registerMessage"
+class="message">
+</div>
 
 </div>
 
 
-<!-- ================= SOS APP ================= -->
+
+<!-- SOS APP -->
 
 <div class="card" id="appScreen">
 
-  <h1>🛡️ SafeBand AI</h1>
+<h1>🛡️ SafeBand AI</h1>
 
-  <div id="userName">
-    Loading...
-  </div>
+<div id="userName">
+Loading...
+</div>
 
-  <div id="status">
-    🟢 SAFE
-  </div>
+<div id="status">
+🟢 SAFE
+</div>
 
-  <button
-    id="sos"
-    onclick="sendSOS()"
-  >
-    🚨<br>SOS
-  </button>
+<button
+id="sos"
+onclick="sendSOS()">
 
-  <div class="info">
+🚨<br>SOS
 
-    📅 Date:
-    <span id="date">---</span>
+</button>
 
-    <br>
+<div class="info">
 
-    ⏰ Time:
-    <span id="time">---</span>
+📅 Date:
+<span id="date">---</span>
 
-    <br>
+<br>
 
-    📍 GPS:
-    <span id="gps">Waiting...</span>
+⏰ Time:
+<span id="time">---</span>
 
-    <a
-      id="mapLink"
-      class="map"
-      href="#"
-      target="_blank"
-    >
-      🗺️ Open Location
-    </a>
+<br>
 
-  </div>
+📍 GPS:
+<span id="gps">Waiting...</span>
 
-  <button
-    class="logout"
-    onclick="logout()"
-  >
-    Logout
-  </button>
+<a
+id="mapLink"
+class="map"
+target="_blank">
+
+🗺️ Open Location
+
+</a>
+
+<a
+id="smsLink"
+class="contactButton sms">
+
+📱 Send SMS to Parent
+
+</a>
+
+<a
+id="emailLink"
+class="contactButton email">
+
+📧 Send Email to Parent
+
+</a>
 
 </div>
+
+<button
+class="logout"
+onclick="logout()">
+
+Logout
+
+</button>
+
+</div>
+
 
 
 <script>
 
 
-/* =========================================
+/* =========================
    SUPABASE
-========================================= */
+========================= */
 
 const SUPABASE_URL =
-  "https://frevekxhlarzhqupacyn.supabase.co";
+"https://frevekxhlarzhqupacyn.supabase.co";
 
 
 const SUPABASE_KEY =
-  "sb_publishable_b48kPa-jjOBTpmtq5gv0BQ_37ZV6pC9";
+"sb_publishable_b48kPa-jjOBTpmtq5gv0BQ_37ZV6pC9";
 
 
 const supabaseClient =
-  window.supabase.createClient(
-    SUPABASE_URL,
-    SUPABASE_KEY
-  );
+window.supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_KEY
+);
 
 
-let currentStudentId = null;
+
+/* =========================
+   GLOBAL DATA
+========================= */
+
+let currentUser = null;
+
+let currentStudent = null;
+
+let parentContact = null;
 
 
-/* =========================================
-   SHOW LOGIN
-========================================= */
+
+/* =========================
+   SCREEN FUNCTIONS
+========================= */
 
 function showLogin() {
+
+  document.getElementById("loginScreen")
+    .style.display = "block";
 
   document.getElementById("registerScreen")
     .style.display = "none";
 
   document.getElementById("appScreen")
     .style.display = "none";
-
-  document.getElementById("loginScreen")
-    .style.display = "block";
 }
 
-
-/* =========================================
-   SHOW REGISTER
-========================================= */
 
 function showRegister() {
 
   document.getElementById("loginScreen")
     .style.display = "none";
 
-  document.getElementById("appScreen")
-    .style.display = "none";
-
   document.getElementById("registerScreen")
     .style.display = "block";
+
+  document.getElementById("appScreen")
+    .style.display = "none";
 }
 
 
-/* =========================================
-   REGISTER
-========================================= */
 
-async function registerUser() {
+/* =========================
+   REGISTER
+========================= */
+
+async function register() {
 
   const name =
-    document.getElementById("name")
+    document.getElementById("regName")
       .value.trim();
 
   const email =
-    document.getElementById("email")
+    document.getElementById("regEmail")
       .value.trim();
 
   const password =
-    document.getElementById("password")
+    document.getElementById("regPassword")
       .value;
 
   const parentName =
@@ -405,6 +550,9 @@ async function registerUser() {
     document.getElementById("parentEmail")
       .value.trim();
 
+  const message =
+    document.getElementById("registerMessage");
+
 
   if (
     !name ||
@@ -415,22 +563,32 @@ async function registerUser() {
     !parentEmail
   ) {
 
-    document.getElementById("registerMessage")
-      .innerText =
+    message.innerText =
       "⚠️ எல்லா details-யும் fill பண்ணுங்க.";
 
     return;
   }
 
 
-  document.getElementById("registerMessage")
-    .innerText =
+  if (password.length < 6) {
+
+    message.innerText =
+      "⚠️ Password minimum 6 characters.";
+
+    return;
+  }
+
+
+  message.innerText =
     "Creating account...";
 
 
-  /* Create Auth account */
+  /* Create Auth User */
 
-  const { data, error } =
+  const {
+    data: authData,
+    error: authError
+  } =
     await supabaseClient.auth.signUp({
 
       email: email,
@@ -440,48 +598,60 @@ async function registerUser() {
     });
 
 
-  if (error) {
+  if (authError) {
 
-    console.error(error);
+    console.error(authError);
 
-    document.getElementById("registerMessage")
-      .innerText =
-      "❌ " + error.message;
+    message.innerText =
+      "❌ " + authError.message;
+
+    return;
+  }
+
+
+  const user =
+    authData.user;
+
+
+  if (!user) {
+
+    message.innerText =
+      "⚠️ Account created. Email confirmation தேவைப்படலாம்.";
 
     return;
   }
 
 
   /*
-   * If email confirmation is enabled,
-   * user may need to confirm email first.
+   * Save Student
    */
 
-  if (!data.user) {
-
-    document.getElementById("registerMessage")
-      .innerText =
-      "⚠️ Account create ஆகவில்லை.";
-
-    return;
-  }
-
-
-  /* Save student details */
-
-  const { data: student, error: studentError } =
+  const {
+    data: student,
+    error: studentError
+  } =
     await supabaseClient
+
       .from("students")
+
       .insert({
 
-        name: name,
+        auth_user_id:
+          user.id,
 
-        parent_email: email,
+        name:
+          name,
 
-        phone: parentPhone
+        parent_email:
+          parentEmail,
+
+        phone:
+          parentPhone
 
       })
+
       .select()
+
       .single();
 
 
@@ -489,34 +659,41 @@ async function registerUser() {
 
     console.error(studentError);
 
-    document.getElementById("registerMessage")
-      .innerText =
-      "❌ Student details save failed.";
+    message.innerText =
+      "❌ Student details save failed: "
+      + studentError.message;
 
     return;
   }
 
 
-  currentStudentId =
-    student.id;
+  /*
+   * Save Parent
+   */
 
-
-  /* Save emergency contact */
-
-  const { error: contactError } =
+  const {
+    error: contactError
+  } =
     await supabaseClient
+
       .from("emergency_contacts")
+
       .insert({
 
-        student_id: student.id,
+        student_id:
+          student.id,
 
-        name: parentName,
+        name:
+          parentName,
 
-        phone: parentPhone,
+        phone:
+          parentPhone,
 
-        email: parentEmail,
+        email:
+          parentEmail,
 
-        relationship: "Parent"
+        relationship:
+          "Parent"
 
       });
 
@@ -525,36 +702,31 @@ async function registerUser() {
 
     console.error(contactError);
 
-    document.getElementById("registerMessage")
-      .innerText =
-      "⚠️ Account created, contact save failed.";
+    message.innerText =
+      "❌ Parent details save failed: "
+      + contactError.message;
 
     return;
   }
 
 
-  /*
-   * Automatic login if session exists
-   */
+  message.innerText =
+    "✅ Account created successfully!";
 
-  if (data.session) {
 
-    await showApp(data.user);
+  setTimeout(() => {
 
-  } else {
+    showLogin();
 
-    document.getElementById("registerMessage")
-      .innerText =
-      "✅ Account created! Email confirm செய்து Login பண்ணுங்க.";
-
-  }
+  }, 1500);
 
 }
 
 
-/* =========================================
+
+/* =========================
    LOGIN
-========================================= */
+========================= */
 
 async function login() {
 
@@ -567,28 +739,35 @@ async function login() {
       .value;
 
 
+  const message =
+    document.getElementById("loginMessage");
+
+
   if (!email || !password) {
 
-    document.getElementById("loginMessage")
-      .innerText =
+    message.innerText =
       "⚠️ Email and password enter pannunga.";
 
     return;
   }
 
 
-  document.getElementById("loginMessage")
-    .innerText =
+  message.innerText =
     "Logging in...";
 
 
-  const { data, error } =
+  const {
+    data,
+    error
+  } =
     await supabaseClient.auth
       .signInWithPassword({
 
-        email: email,
+        email:
+          email,
 
-        password: password
+        password:
+          password
 
       });
 
@@ -597,9 +776,8 @@ async function login() {
 
     console.error(error);
 
-    document.getElementById("loginMessage")
-      .innerText =
-      "❌ " + error.message;
+    message.innerText =
+      "❌ Invalid login credentials";
 
     return;
   }
@@ -610,11 +788,15 @@ async function login() {
 }
 
 
-/* =========================================
-   SHOW SOS SCREEN
-========================================= */
+
+/* =========================
+   SHOW APP
+========================= */
 
 async function showApp(user) {
+
+  currentUser = user;
+
 
   document.getElementById("loginScreen")
     .style.display = "none";
@@ -626,40 +808,99 @@ async function showApp(user) {
     .style.display = "block";
 
 
-  const { data, error } =
+  /*
+   * Get Logged-in User
+   */
+
+  const {
+    data: student,
+    error
+  } =
     await supabaseClient
+
       .from("students")
-      .select("id, name")
-      .eq("parent_email", user.email)
-      .limit(1)
+
+      .select("*")
+
+      .eq("auth_user_id", user.id)
+
       .maybeSingle();
 
 
-  if (!error && data) {
+  if (error) {
 
-    currentStudentId =
-      data.id;
-
-    document.getElementById("userName")
-      .innerText =
-      data.name;
-
-  } else {
+    console.error(error);
 
     document.getElementById("userName")
-      .innerText =
-      user.email;
+      .innerText = "User";
 
+    return;
   }
+
+
+  if (!student) {
+
+    document.getElementById("userName")
+      .innerText = "User";
+
+    return;
+  }
+
+
+  currentStudent =
+    student;
+
+
+  document.getElementById("userName")
+    .innerText =
+      student.name;
+
+
+  /*
+   * Get Parent Contact
+   */
+
+  const {
+    data: contact
+  } =
+    await supabaseClient
+
+      .from("emergency_contacts")
+
+      .select("*")
+
+      .eq(
+        "student_id",
+        student.id
+      )
+
+      .limit(1)
+
+      .maybeSingle();
+
+
+  parentContact =
+    contact;
 
 }
 
 
-/* =========================================
+
+/* =========================
    SOS
-========================================= */
+========================= */
 
 async function sendSOS() {
+
+  if (!currentStudent) {
+
+    alert(
+      "⚠️ User details not loaded."
+    );
+
+    return;
+  }
+
 
   const status =
     document.getElementById("status");
@@ -688,17 +929,19 @@ async function sendSOS() {
 
   document.getElementById("date")
     .innerText =
-    date;
+      date;
 
 
   document.getElementById("time")
     .innerText =
-    time;
+      time;
 
 
   if (!navigator.geolocation) {
 
-    alert("❌ GPS supported இல்லை.");
+    alert(
+      "❌ GPS supported இல்லை."
+    );
 
     return;
   }
@@ -717,12 +960,14 @@ async function sendSOS() {
 
       document.getElementById("gps")
         .innerText =
-        latitude.toFixed(6)
-        + ", "
-        + longitude.toFixed(6);
+          latitude.toFixed(6)
+          + ", "
+          + longitude.toFixed(6);
 
 
-      /* Google Maps */
+      /*
+       * Google Maps
+       */
 
       const mapURL =
         "https://www.google.com/maps?q="
@@ -743,25 +988,21 @@ async function sendSOS() {
         "block";
 
 
-      /* Save emergency */
+      /*
+       * Save SOS
+       */
 
-      if (!currentStudentId) {
-
-        alert(
-          "❌ Student account not found."
-        );
-
-        return;
-      }
-
-
-      const { error } =
+      const {
+        error
+      } =
         await supabaseClient
+
           .from("emergency_alerts")
+
           .insert({
 
             student_id:
-              currentStudentId,
+              currentStudent.id,
 
             latitude:
               latitude,
@@ -786,7 +1027,7 @@ async function sendSOS() {
         console.error(error);
 
         alert(
-          "❌ SOS save failed: "
+          "❌ SOS database save failed: "
           + error.message
         );
 
@@ -794,11 +1035,85 @@ async function sendSOS() {
       }
 
 
+      /*
+       * Parent SMS
+       */
+
+      if (parentContact) {
+
+        const smsMessage =
+          "🚨 SAFE BAND EMERGENCY!\n"
+          + "Name: "
+          + currentStudent.name
+          + "\nDate: "
+          + date
+          + "\nTime: "
+          + time
+          + "\nLocation: "
+          + mapURL;
+
+
+        const smsLink =
+          document.getElementById("smsLink");
+
+
+        smsLink.href =
+          "sms:"
+          + parentContact.phone
+          + "?body="
+          + encodeURIComponent(
+              smsMessage
+            );
+
+
+        smsLink.style.display =
+          "block";
+
+
+        /*
+         * Parent Email
+         */
+
+        const emailMessage =
+          "SAFE BAND EMERGENCY\n\n"
+          + "Name: "
+          + currentStudent.name
+          + "\nDate: "
+          + date
+          + "\nTime: "
+          + time
+          + "\nGPS: "
+          + latitude
+          + ", "
+          + longitude
+          + "\n\nGoogle Maps:\n"
+          + mapURL;
+
+
+        const emailLink =
+          document.getElementById("emailLink");
+
+
+        emailLink.href =
+          "mailto:"
+          + parentContact.email
+          + "?subject="
+          + encodeURIComponent(
+              "🚨 SafeBand Emergency Alert"
+            )
+          + "&body="
+          + encodeURIComponent(
+              emailMessage
+            );
+
+
+        emailLink.style.display =
+          "block";
+      }
+
+
       alert(
-        "🚨 SOS SENT!\n\n"
-        + "📍 Location saved\n"
-        + "📅 " + date + "\n"
-        + "⏰ " + time
+        "🚨 SOS SAVED SUCCESSFULLY!"
       );
 
     },
@@ -817,11 +1132,14 @@ async function sendSOS() {
 
     {
 
-      enableHighAccuracy: true,
+      enableHighAccuracy:
+        true,
 
-      timeout: 10000,
+      timeout:
+        10000,
 
-      maximumAge: 0
+      maximumAge:
+        0
 
     }
 
@@ -830,27 +1148,38 @@ async function sendSOS() {
 }
 
 
-/* =========================================
+
+/* =========================
    LOGOUT
-========================================= */
+========================= */
 
 async function logout() {
 
   await supabaseClient.auth.signOut();
 
-  location.reload();
+  currentUser = null;
+
+  currentStudent = null;
+
+  parentContact = null;
+
+  showLogin();
 
 }
 
 
-/* =========================================
-   CHECK LOGIN
-========================================= */
+
+/* =========================
+   AUTO LOGIN
+========================= */
 
 async function checkLogin() {
 
-  const { data } =
-    await supabaseClient.auth.getSession();
+  const {
+    data
+  } =
+    await supabaseClient.auth
+      .getSession();
 
 
   if (data.session) {
@@ -869,7 +1198,6 @@ async function checkLogin() {
 
 
 checkLogin();
-
 
 </script>
 
