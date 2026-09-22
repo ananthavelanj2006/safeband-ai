@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>SafeBand AI - Emergency System</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #0f172a;
+      color: white;
+    }
+
+    header {
+      background: #111827;
+      padding: 18px;
+      text-align: center;
+      border-bottom: 1px solid #374151;
+    }
+
+    header h1 {
+      margin: 0;
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: auto;
+      padding: 20px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+
+    .card {
+      background: #1e293b;
+      padding: 25px;
+      border-radius: 20px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    }
+
+    .safe {
+      color: #22c55e;
+      font-size: 24px;
+      font-weight: bold;
+    }
+
+    .danger {
+      color: #ef4444;
+      font-size: 24px;
+      font-weight: bold;
+    }
+
+    .sos {
+      width: 190px;
+      height: 190px;
+      border-radius: 50%;
+      border: none;
+      background: #dc2626;
+      color: white;
+      font-size: 32px;
+      font-weight: bold;
+      cursor: pointer;
+      display: block;
+      margin: 30px auto;
+      box-shadow: 0 0 40px rgba(220,38,38,0.6);
+    }
+
+    .sos:active {
+      transform: scale(0.95);
+    }
+
+    .info {
+      background: #334155;
+      padding: 15px;
+      border-radius: 12px;
+      margin-top: 15px;
+      line-height: 1.9;
+    }
+
+    .map {
+      width: 100%;
+      height: 300px;
+      border: 0;
+      border-radius: 15px;
+      margin-top: 15px;
+    }
+
+    .button {
+      border: none;
+      padding: 12px 18px;
+      border-radius: 10px;
+      cursor: pointer;
+      margin-top: 10px;
+      font-weight: bold;
+    }
+
+    .mapButton {
+      background: #2563eb;
+      color: white;
+    }
+
+    .resetButton {
+      background: #475569;
+      color: white;
+    }
+
+    .alertBox {
+      display: none;
+      background: #450a0a;
+      border: 2px solid #ef4444;
+      padding: 18px;
+      border-radius: 15px;
+      margin-top: 20px;
+    }
+
+    .alertBox.show {
+      display: block;
+    }
+
+    @media(max-width: 700px) {
+      .grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <h1>🛡️ SafeBand AI</h1>
+  <p>Women Safety Emergency System</p>
+</header>
+
+<div class="container">
+
+  <div class="grid">
+
+    <!-- STUDENT PHONE -->
+    <div class="card">
+
+      <h2>📱 Student Safety</h2>
+
+      <div id="status" class="safe">
+        🟢 SAFE
+      </div>
+
+      <button class="sos" onclick="sendSOS()">
+        🚨<br>SOS
+      </button>
+
+      <div class="info">
+
+        👤 Student:
+        <b>Student 01</b>
+        <br>
+
+        📡 GPS:
+        <b id="gpsStatus">Ready</b>
+
+        <br>
+
+        🔋 Battery:
+        <b id="battery">Checking...</b>
+
+      </div>
+
+    </div>
+
+
+    <!-- CONTROL ROOM -->
+    <div class="card">
+
+      <h2>🖥️ Control Room</h2>
+
+      <div id="controlStatus">
+        🟢 No Active Emergency
+      </div>
+
+      <div class="alertBox" id="alertBox">
+
+        <h3>🚨 EMERGENCY ALERT</h3>
+
+        <p>
+          👤 Student:
+          <b id="studentName">Student 01</b>
+        </p>
+
+        <p>
+          📅 Date:
+          <b id="date"></b>
+        </p>
+
+        <p>
+          ⏰ Time:
+          <b id="time"></b>
+        </p>
+
+        <p>
+          📍 Latitude:
+          <b id="latitude"></b>
+        </p>
+
+        <p>
+          📍 Longitude:
+          <b id="longitude"></b>
+        </p>
+
+        <p>
+          📧 Parent notification:
+          <b id="mailStatus">Preparing...</b>
+        </p>
+
+      </div>
+
+      <iframe
+        id="map"
+        class="map"
+        style="display:none;">
+      </iframe>
+
+      <button
+        id="mapButton"
+        class="button mapButton"
+        style="display:none;"
+        onclick="openMap()">
+        🗺️ Open Live Location
+      </button>
+
+      <br>
+
+      <button
+        class="button resetButton"
+        onclick="resetSystem()">
+        🔄 Reset Emergency
+      </button>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<script>
+
+let emergencyLatitude = null;
+let emergencyLongitude = null;
+
+
+/* ==========================
+   SOS FUNCTION
+========================== */
+
+function sendSOS() {
+
+  const status =
+    document.getElementById("status");
+
+  const controlStatus =
+    document.getElementById("controlStatus");
+
+  const alertBox =
+    document.getElementById("alertBox");
+
+  const gpsStatus =
+    document.getElementById("gpsStatus");
+
+  status.innerHTML =
+    "🔴 EMERGENCY ACTIVE";
+
+  status.className = "danger";
+
+  controlStatus.innerHTML =
+    "🔴 EMERGENCY RECEIVED";
+
+  alertBox.classList.add("show");
+
+  gpsStatus.innerHTML =
+    "Searching...";
+
+
+  /* DATE + TIME */
+
+  const now = new Date();
+
+  const date =
+    now.toLocaleDateString();
+
+  const time =
+    now.toLocaleTimeString();
+
+  document.getElementById("date")
+    .innerText = date;
+
+  document.getElementById("time")
+    .innerText = time;
+
+
+  /* GPS */
+
+  if (navigator.geolocation) {
+
+    navigator.geolocation.getCurrentPosition(
+
+      function(position) {
+
+        emergencyLatitude =
+          position.coords.latitude;
+
+        emergencyLongitude =
+          position.coords.longitude;
+
+        document.getElementById("latitude")
+          .innerText =
+          emergencyLatitude.toFixed(6);
+
+        document.getElementById("longitude")
+          .innerText =
+          emergencyLongitude.toFixed(6);
+
+        gpsStatus.innerHTML =
+          "🟢 Location Found";
+
+
+        /* GOOGLE MAP */
+
+        const mapURL =
+          "https://www.google.com/maps?q=" +
+          emergencyLatitude +
+          "," +
+          emergencyLongitude;
+
+        document.getElementById("map")
+          .src = mapURL;
+
+        document.getElementById("map")
+          .style.display = "block";
+
+        document.getElementById("mapButton")
+          .style.display = "inline-block";
+
+
+        /*
+          DEMO MAIL STATUS
+
+          Real email backend will be connected
+          in the next step.
+        */
+
+        document.getElementById("mailStatus")
+          .innerText =
+          "Ready to send";
+
+
+        /*
+          Save emergency locally
+          for prototype testing.
+        */
+
+        const emergencyData = {
+
+          student: "Student 01",
+
+          date: date,
+
+          time: time,
+
+          latitude:
+            emergencyLatitude,
+
+          longitude:
+            emergencyLongitude,
+
+          map:
+            mapURL
+
+        };
+
+        localStorage.setItem(
+          "latestEmergency",
+          JSON.stringify(emergencyData)
+        );
+
+      },
+
+      function(error) {
+
+        gpsStatus.innerHTML =
+          "⚠️ Permission denied";
+
+        document.getElementById("mailStatus")
+          .innerText =
+          "GPS permission required";
+
+      },
+
+      {
+        enableHighAccuracy: true,
+        timeout: 10000,
+        maximumAge: 0
+      }
+
+    );
+
+  } else {
+
+    gpsStatus.innerHTML =
+      "❌ GPS unavailable";
+
+  }
+
+}
+
+
+/* ==========================
+   OPEN GOOGLE MAP
+========================== */
+
+function openMap() {
+
+  if (
+    emergencyLatitude !== null &&
+    emergencyLongitude !== null
+  ) {
+
+    const url =
+      "https://www.google.com/maps?q=" +
+      emergencyLatitude +
+      "," +
+      emergencyLongitude;
+
+    window.open(url, "_blank");
+
+  }
+
+}
+
+
+/* ==========================
+   RESET
+========================== */
+
+function resetSystem() {
+
+  document.getElementById("status")
+    .innerHTML = "🟢 SAFE";
+
+  document.getElementById("status")
+    .className = "safe";
+
+  document.getElementById("controlStatus")
+    .innerHTML =
+    "🟢 No Active Emergency";
+
+  document.getElementById("alertBox")
+    .classList.remove("show");
+
+  document.getElementById("map")
+    .style.display = "none";
+
+  document.getElementById("mapButton")
+    .style.display = "none";
+
+  document.getElementById("gpsStatus")
+    .innerHTML = "Ready";
+
+}
+
+
+/* ==========================
+   BATTERY STATUS
+========================== */
+
+if ("getBattery" in navigator) {
+
+  navigator.getBattery().then(function(battery) {
+
+    function updateBattery() {
+
+      document.getElementById("battery")
+        .innerText =
+        Math.round(
+          battery.level * 100
+        ) + "%";
+
+    }
+
+    updateBattery();
+
+    battery.addEventListener(
+      "levelchange",
+      updateBattery
+    );
+
+  });
+
+} else {
+
+  document.getElementById("battery")
+    .innerText =
+    "Not supported";
+
+}
+
+</script>
+
+</body>
+</html>
