@@ -1,304 +1,129 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>SafeBand AI - Emergency System</title>
+  <title>SafeBand AI</title>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
   <style>
-    * {
-      box-sizing: border-box;
-    }
-
     body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: #0f172a;
-      color: white;
-    }
-
-    header {
+      font-family: Arial;
       background: #111827;
-      padding: 18px;
+      color: white;
       text-align: center;
-      border-bottom: 1px solid #374151;
-    }
-
-    header h1 {
-      margin: 0;
-    }
-
-    .container {
-      max-width: 1000px;
-      margin: auto;
-      padding: 20px;
-    }
-
-    .grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 20px;
+      padding: 30px;
     }
 
     .card {
-      background: #1e293b;
-      padding: 25px;
-      border-radius: 20px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+      max-width: 450px;
+      margin: auto;
+      background: #1f2937;
+      padding: 30px;
+      border-radius: 25px;
     }
 
-    .safe {
+    #status {
+      font-size: 22px;
+      margin: 20px;
       color: #22c55e;
-      font-size: 24px;
       font-weight: bold;
     }
 
-    .danger {
-      color: #ef4444;
-      font-size: 24px;
-      font-weight: bold;
-    }
-
-    .sos {
+    #sos {
       width: 190px;
       height: 190px;
       border-radius: 50%;
       border: none;
       background: #dc2626;
       color: white;
-      font-size: 32px;
+      font-size: 30px;
       font-weight: bold;
       cursor: pointer;
-      display: block;
-      margin: 30px auto;
-      box-shadow: 0 0 40px rgba(220,38,38,0.6);
-    }
-
-    .sos:active {
-      transform: scale(0.95);
+      box-shadow: 0 0 35px #dc2626;
     }
 
     .info {
-      background: #334155;
-      padding: 15px;
-      border-radius: 12px;
-      margin-top: 15px;
-      line-height: 1.9;
-    }
-
-    .map {
-      width: 100%;
-      height: 300px;
-      border: 0;
+      margin-top: 25px;
+      background: #374151;
+      padding: 20px;
       border-radius: 15px;
-      margin-top: 15px;
-    }
-
-    .button {
-      border: none;
-      padding: 12px 18px;
-      border-radius: 10px;
-      cursor: pointer;
-      margin-top: 10px;
-      font-weight: bold;
-    }
-
-    .mapButton {
-      background: #2563eb;
-      color: white;
-    }
-
-    .resetButton {
-      background: #475569;
-      color: white;
-    }
-
-    .alertBox {
-      display: none;
-      background: #450a0a;
-      border: 2px solid #ef4444;
-      padding: 18px;
-      border-radius: 15px;
-      margin-top: 20px;
-    }
-
-    .alertBox.show {
-      display: block;
-    }
-
-    @media(max-width: 700px) {
-      .grid {
-        grid-template-columns: 1fr;
-      }
+      line-height: 2;
     }
   </style>
 </head>
 
 <body>
 
-<header>
+<div class="card">
+
   <h1>🛡️ SafeBand AI</h1>
+
   <p>Women Safety Emergency System</p>
-</header>
 
-<div class="container">
+  <div id="status">🟢 SAFE</div>
 
-  <div class="grid">
+  <button id="sos" onclick="sendSOS()">
+    🚨<br>SOS
+  </button>
 
-    <!-- STUDENT PHONE -->
-    <div class="card">
+  <div class="info">
 
-      <h2>📱 Student Safety</h2>
+    👤 Student: Student 01
 
-      <div id="status" class="safe">
-        🟢 SAFE
-      </div>
+    <br>
 
-      <button class="sos" onclick="sendSOS()">
-        🚨<br>SOS
-      </button>
+    📅 Date:
+    <span id="date">---</span>
 
-      <div class="info">
+    <br>
 
-        👤 Student:
-        <b>Student 01</b>
-        <br>
+    ⏰ Time:
+    <span id="time">---</span>
 
-        📡 GPS:
-        <b id="gpsStatus">Ready</b>
+    <br>
 
-        <br>
-
-        🔋 Battery:
-        <b id="battery">Checking...</b>
-
-      </div>
-
-    </div>
-
-
-    <!-- CONTROL ROOM -->
-    <div class="card">
-
-      <h2>🖥️ Control Room</h2>
-
-      <div id="controlStatus">
-        🟢 No Active Emergency
-      </div>
-
-      <div class="alertBox" id="alertBox">
-
-        <h3>🚨 EMERGENCY ALERT</h3>
-
-        <p>
-          👤 Student:
-          <b id="studentName">Student 01</b>
-        </p>
-
-        <p>
-          📅 Date:
-          <b id="date"></b>
-        </p>
-
-        <p>
-          ⏰ Time:
-          <b id="time"></b>
-        </p>
-
-        <p>
-          📍 Latitude:
-          <b id="latitude"></b>
-        </p>
-
-        <p>
-          📍 Longitude:
-          <b id="longitude"></b>
-        </p>
-
-        <p>
-          📧 Parent notification:
-          <b id="mailStatus">Preparing...</b>
-        </p>
-
-      </div>
-
-      <iframe
-        id="map"
-        class="map"
-        style="display:none;">
-      </iframe>
-
-      <button
-        id="mapButton"
-        class="button mapButton"
-        style="display:none;"
-        onclick="openMap()">
-        🗺️ Open Live Location
-      </button>
-
-      <br>
-
-      <button
-        class="button resetButton"
-        onclick="resetSystem()">
-        🔄 Reset Emergency
-      </button>
-
-    </div>
+    📍 GPS:
+    <span id="gps">Waiting...</span>
 
   </div>
 
 </div>
 
-
 <script>
 
-let emergencyLatitude = null;
-let emergencyLongitude = null;
+const SUPABASE_URL = "frevekxhlarzhqupacyn";
+
+const SUPABASE_KEY = "sb_publishable_b48kPa-jjOBTpmtq5gv0BQ_37ZV6pC9";
+
+const supabaseClient =
+  window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_KEY
+  );
 
 
-/* ==========================
-   SOS FUNCTION
-========================== */
-
-function sendSOS() {
+async function sendSOS() {
 
   const status =
     document.getElementById("status");
 
-  const controlStatus =
-    document.getElementById("controlStatus");
-
-  const alertBox =
-    document.getElementById("alertBox");
-
-  const gpsStatus =
-    document.getElementById("gpsStatus");
-
   status.innerHTML =
     "🔴 EMERGENCY ACTIVE";
 
-  status.className = "danger";
+  status.style.color = "#ef4444";
 
-  controlStatus.innerHTML =
-    "🔴 EMERGENCY RECEIVED";
-
-  alertBox.classList.add("show");
-
-  gpsStatus.innerHTML =
-    "Searching...";
-
-
-  /* DATE + TIME */
 
   const now = new Date();
 
   const date =
-    now.toLocaleDateString();
+    now.toISOString().split("T")[0];
 
   const time =
-    now.toLocaleTimeString();
+    now.toTimeString().split(" ")[0];
+
 
   document.getElementById("date")
     .innerText = date;
@@ -307,209 +132,92 @@ function sendSOS() {
     .innerText = time;
 
 
-  /* GPS */
+  if (!navigator.geolocation) {
 
-  if (navigator.geolocation) {
+    alert("GPS is not supported");
 
-    navigator.geolocation.getCurrentPosition(
+    return;
 
-      function(position) {
-
-        emergencyLatitude =
-          position.coords.latitude;
-
-        emergencyLongitude =
-          position.coords.longitude;
-
-        document.getElementById("latitude")
-          .innerText =
-          emergencyLatitude.toFixed(6);
-
-        document.getElementById("longitude")
-          .innerText =
-          emergencyLongitude.toFixed(6);
-
-        gpsStatus.innerHTML =
-          "🟢 Location Found";
+  }
 
 
-        /* GOOGLE MAP */
+  navigator.geolocation.getCurrentPosition(
 
-        const mapURL =
-          "https://www.google.com/maps?q=" +
-          emergencyLatitude +
-          "," +
-          emergencyLongitude;
+    async function(position) {
 
-        document.getElementById("map")
-          .src = mapURL;
+      const latitude =
+        position.coords.latitude;
 
-        document.getElementById("map")
-          .style.display = "block";
-
-        document.getElementById("mapButton")
-          .style.display = "inline-block";
+      const longitude =
+        position.coords.longitude;
 
 
-        /*
-          DEMO MAIL STATUS
-
-          Real email backend will be connected
-          in the next step.
-        */
-
-        document.getElementById("mailStatus")
-          .innerText =
-          "Ready to send";
+      document.getElementById("gps")
+        .innerText =
+        latitude.toFixed(6) +
+        ", " +
+        longitude.toFixed(6);
 
 
-        /*
-          Save emergency locally
-          for prototype testing.
-        */
+      const { data, error } =
+        await supabaseClient
 
-        const emergencyData = {
+        .from("emergency_alerts")
 
-          student: "Student 01",
+        .insert({
 
-          date: date,
+          student_id: 1,
 
-          time: time,
+          latitude: latitude,
 
-          latitude:
-            emergencyLatitude,
+          longitude: longitude,
 
-          longitude:
-            emergencyLongitude,
+          emergency_date: date,
 
-          map:
-            mapURL
+          emergency_time: time,
 
-        };
+          status: "ACTIVE"
 
-        localStorage.setItem(
-          "latestEmergency",
-          JSON.stringify(emergencyData)
+        });
+
+
+      if (error) {
+
+        console.error(error);
+
+        alert(
+          "❌ SOS database save failed"
         );
 
-      },
+      } else {
 
-      function(error) {
+        alert(
+          "🚨 SOS SAVED SUCCESSFULLY!"
+        );
 
-        gpsStatus.innerHTML =
-          "⚠️ Permission denied";
-
-        document.getElementById("mailStatus")
-          .innerText =
-          "GPS permission required";
-
-      },
-
-      {
-        enableHighAccuracy: true,
-        timeout: 10000,
-        maximumAge: 0
       }
 
-    );
+    },
 
-  } else {
+    function(error) {
 
-    gpsStatus.innerHTML =
-      "❌ GPS unavailable";
+      alert(
+        "⚠️ Please allow GPS permission"
+      );
 
-  }
+    },
 
-}
+    {
 
+      enableHighAccuracy: true,
 
-/* ==========================
-   OPEN GOOGLE MAP
-========================== */
+      timeout: 10000,
 
-function openMap() {
-
-  if (
-    emergencyLatitude !== null &&
-    emergencyLongitude !== null
-  ) {
-
-    const url =
-      "https://www.google.com/maps?q=" +
-      emergencyLatitude +
-      "," +
-      emergencyLongitude;
-
-    window.open(url, "_blank");
-
-  }
-
-}
-
-
-/* ==========================
-   RESET
-========================== */
-
-function resetSystem() {
-
-  document.getElementById("status")
-    .innerHTML = "🟢 SAFE";
-
-  document.getElementById("status")
-    .className = "safe";
-
-  document.getElementById("controlStatus")
-    .innerHTML =
-    "🟢 No Active Emergency";
-
-  document.getElementById("alertBox")
-    .classList.remove("show");
-
-  document.getElementById("map")
-    .style.display = "none";
-
-  document.getElementById("mapButton")
-    .style.display = "none";
-
-  document.getElementById("gpsStatus")
-    .innerHTML = "Ready";
-
-}
-
-
-/* ==========================
-   BATTERY STATUS
-========================== */
-
-if ("getBattery" in navigator) {
-
-  navigator.getBattery().then(function(battery) {
-
-    function updateBattery() {
-
-      document.getElementById("battery")
-        .innerText =
-        Math.round(
-          battery.level * 100
-        ) + "%";
+      maximumAge: 0
 
     }
 
-    updateBattery();
-
-    battery.addEventListener(
-      "levelchange",
-      updateBattery
-    );
-
-  });
-
-} else {
-
-  document.getElementById("battery")
-    .innerText =
-    "Not supported";
+  );
 
 }
 
