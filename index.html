@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,20 +10,80 @@
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
   <style>
+
+    * {
+      box-sizing: border-box;
+    }
+
     body {
-      font-family: Arial;
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-family: Arial, sans-serif;
       background: #111827;
       color: white;
-      text-align: center;
-      padding: 30px;
+      padding: 20px;
     }
 
     .card {
-      max-width: 450px;
-      margin: auto;
+      width: 100%;
+      max-width: 430px;
       background: #1f2937;
       padding: 30px;
       border-radius: 25px;
+      text-align: center;
+    }
+
+    h1 {
+      margin-bottom: 5px;
+    }
+
+    .subtitle {
+      color: #d1d5db;
+      margin-bottom: 25px;
+    }
+
+    input {
+      width: 100%;
+      padding: 15px;
+      margin: 8px 0;
+      border: none;
+      border-radius: 10px;
+      font-size: 16px;
+    }
+
+    .login-btn {
+      width: 100%;
+      padding: 15px;
+      margin-top: 15px;
+      border: none;
+      border-radius: 10px;
+      background: #2563eb;
+      color: white;
+      font-size: 18px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .login-btn:active {
+      transform: scale(0.98);
+    }
+
+    #loginMessage {
+      margin-top: 15px;
+      color: #fbbf24;
+    }
+
+    #appScreen {
+      display: none;
+    }
+
+    #studentName {
+      font-size: 27px;
+      font-weight: bold;
+      margin: 20px 0;
     }
 
     #status {
@@ -42,7 +103,11 @@
       font-size: 30px;
       font-weight: bold;
       cursor: pointer;
-      box-shadow: 0 0 35px #dc2626;
+      box-shadow: 0 0 35px rgba(220, 38, 38, 0.6);
+    }
+
+    #sos:active {
+      transform: scale(0.95);
     }
 
     .info {
@@ -51,177 +116,436 @@
       padding: 20px;
       border-radius: 15px;
       line-height: 2;
+      text-align: left;
     }
+
+    .map {
+      display: none;
+      margin-top: 10px;
+      padding: 10px 15px;
+      background: #2563eb;
+      color: white;
+      text-decoration: none;
+      border-radius: 8px;
+      text-align: center;
+    }
+
+    .logout {
+      margin-top: 20px;
+      background: #6b7280;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
   </style>
+
 </head>
 
 <body>
 
-<div class="card">
+  <!-- LOGIN SCREEN -->
 
-  <h1>🛡️ SafeBand AI</h1>
+  <div class="card" id="loginScreen">
 
-  <p>Women Safety Emergency System</p>
+    <h1>🛡️ SafeBand AI</h1>
 
-  <div id="status">🟢 SAFE</div>
+    <div class="subtitle">
+      Women Safety Emergency System
+    </div>
 
-  <button id="sos" onclick="sendSOS()">
-    🚨<br>SOS
-  </button>
+    <input
+      type="email"
+      id="email"
+      placeholder="Email"
+    >
 
-  <div class="info">
+    <input
+      type="password"
+      id="password"
+      placeholder="Password"
+    >
 
-    👤 Student: Student 01
+    <button
+      class="login-btn"
+      onclick="login()"
+    >
+      🔐 LOGIN
+    </button>
 
-    <br>
-
-    📅 Date:
-    <span id="date">---</span>
-
-    <br>
-
-    ⏰ Time:
-    <span id="time">---</span>
-
-    <br>
-
-    📍 GPS:
-    <span id="gps">Waiting...</span>
+    <div id="loginMessage"></div>
 
   </div>
 
-</div>
+
+  <!-- SOS SCREEN -->
+
+  <div class="card" id="appScreen">
+
+    <h1>🛡️ SafeBand AI</h1>
+
+    <div id="studentName">
+      Loading...
+    </div>
+
+    <div id="status">
+      🟢 SAFE
+    </div>
+
+    <button
+      id="sos"
+      onclick="sendSOS()"
+    >
+      🚨<br>SOS
+    </button>
+
+    <div class="info">
+
+      📅 Date:
+      <span id="date">---</span>
+
+      <br>
+
+      ⏰ Time:
+      <span id="time">---</span>
+
+      <br>
+
+      📍 GPS:
+      <span id="gps">Waiting...</span>
+
+      <br>
+
+      <a
+        id="mapLink"
+        class="map"
+        href="#"
+        target="_blank"
+      >
+        🗺️ Open Location
+      </a>
+
+    </div>
+
+    <button
+      class="logout"
+      onclick="logout()"
+    >
+      Logout
+    </button>
+
+  </div>
+
 
 <script>
 
-const SUPABASE_URL = "frevekxhlarzhqupacyn";
+  /*
+   * SUPABASE
+   */
 
-const SUPABASE_KEY = "sb_publishable_b48kPa-jjOBTpmtq5gv0BQ_37ZV6pC9";
+  const SUPABASE_URL =
+    "https://frevekxhlarzhqupacyn.supabase.co";
 
-const supabaseClient =
-  window.supabase.createClient(
-    SUPABASE_URL,
-    SUPABASE_KEY
-  );
-
-
-async function sendSOS() {
-
-  const status =
-    document.getElementById("status");
-
-  status.innerHTML =
-    "🔴 EMERGENCY ACTIVE";
-
-  status.style.color = "#ef4444";
+  const SUPABASE_KEY =
+    "YOUR_NEW_PUBLISHABLE_KEY";
 
 
-  const now = new Date();
-
-  const date =
-    now.toISOString().split("T")[0];
-
-  const time =
-    now.toTimeString().split(" ")[0];
+  const supabaseClient =
+    window.supabase.createClient(
+      SUPABASE_URL,
+      SUPABASE_KEY
+    );
 
 
-  document.getElementById("date")
-    .innerText = date;
+  /*
+   * LOGIN
+   */
 
-  document.getElementById("time")
-    .innerText = time;
+  async function login() {
+
+    const email =
+      document.getElementById("email").value.trim();
+
+    const password =
+      document.getElementById("password").value;
 
 
-  if (!navigator.geolocation) {
+    if (!email || !password) {
 
-    alert("GPS is not supported");
+      document.getElementById("loginMessage")
+        .innerText =
+        "⚠️ Email and password enter pannunga.";
 
-    return;
+      return;
+    }
+
+
+    document.getElementById("loginMessage")
+      .innerText =
+      "Logging in...";
+
+
+    const { data, error } =
+      await supabaseClient.auth.signInWithPassword({
+
+        email: email,
+
+        password: password
+
+      });
+
+
+    if (error) {
+
+      console.error(error);
+
+      document.getElementById("loginMessage")
+        .innerText =
+        "❌ " + error.message;
+
+      return;
+    }
+
+
+    await showApp(data.user);
 
   }
 
 
-  navigator.geolocation.getCurrentPosition(
+  /*
+   * SHOW SOS APP
+   */
 
-    async function(position) {
+  async function showApp(user) {
 
-      const latitude =
-        position.coords.latitude;
+    document.getElementById("loginScreen")
+      .style.display = "none";
 
-      const longitude =
-        position.coords.longitude;
-
-
-      document.getElementById("gps")
-        .innerText =
-        latitude.toFixed(6) +
-        ", " +
-        longitude.toFixed(6);
+    document.getElementById("appScreen")
+      .style.display = "block";
 
 
-      const { data, error } =
-        await supabaseClient
+    /*
+     * Get student name using email
+     */
 
-        .from("emergency_alerts")
-
-        .insert({
-
-          student_id: 1,
-
-          latitude: latitude,
-
-          longitude: longitude,
-
-          emergency_date: date,
-
-          emergency_time: time,
-
-          status: "ACTIVE"
-
-        });
+    const { data, error } =
+      await supabaseClient
+        .from("students")
+        .select("id, name")
+        .eq("parent_email", user.email)
+        .limit(1)
+        .maybeSingle();
 
 
-      if (error) {
+    if (!error && data) {
 
-        console.error(error);
+      document.getElementById("studentName")
+        .innerText = data.name;
 
-        alert(
-          "❌ SOS database save failed"
-        );
+      window.studentId = data.id;
 
-      } else {
+    } else {
+
+      document.getElementById("studentName")
+        .innerText = user.email;
+
+      window.studentId = 1;
+
+    }
+
+  }
+
+
+  /*
+   * SOS
+   */
+
+  async function sendSOS() {
+
+    const status =
+      document.getElementById("status");
+
+    status.innerText =
+      "🔴 EMERGENCY ACTIVE";
+
+    status.style.color =
+      "#ef4444";
+
+
+    const now = new Date();
+
+    const date =
+      now.toISOString().split("T")[0];
+
+    const time =
+      now.toTimeString().split(" ")[0];
+
+
+    document.getElementById("date")
+      .innerText = date;
+
+    document.getElementById("time")
+      .innerText = time;
+
+
+    if (!navigator.geolocation) {
+
+      alert("❌ GPS supported இல்லை.");
+
+      return;
+    }
+
+
+    navigator.geolocation.getCurrentPosition(
+
+      async function(position) {
+
+        const latitude =
+          position.coords.latitude;
+
+        const longitude =
+          position.coords.longitude;
+
+
+        document.getElementById("gps")
+          .innerText =
+          latitude.toFixed(6)
+          + ", "
+          + longitude.toFixed(6);
+
+
+        const mapURL =
+          "https://www.google.com/maps?q="
+          + latitude
+          + ","
+          + longitude;
+
+
+        const mapLink =
+          document.getElementById("mapLink");
+
+        mapLink.href = mapURL;
+
+        mapLink.style.display =
+          "block";
+
+
+        /*
+         * SAVE SOS
+         */
+
+        const { error } =
+          await supabaseClient
+            .from("emergency_alerts")
+            .insert({
+
+              student_id:
+                window.studentId,
+
+              latitude:
+                latitude,
+
+              longitude:
+                longitude,
+
+              emergency_date:
+                date,
+
+              emergency_time:
+                time,
+
+              status:
+                "ACTIVE"
+
+            });
+
+
+        if (error) {
+
+          console.error(error);
+
+          alert(
+            "❌ SOS database save failed"
+          );
+
+          return;
+        }
+
 
         alert(
           "🚨 SOS SAVED SUCCESSFULLY!"
         );
 
+      },
+
+
+      function(error) {
+
+        console.error(error);
+
+        alert(
+          "⚠️ Location permission Allow pannunga."
+        );
+
+      },
+
+
+      {
+
+        enableHighAccuracy: true,
+
+        timeout: 10000,
+
+        maximumAge: 0
+
       }
 
-    },
+    );
 
-    function(error) {
+  }
 
-      alert(
-        "⚠️ Please allow GPS permission"
+
+  /*
+   * LOGOUT
+   */
+
+  async function logout() {
+
+    await supabaseClient.auth.signOut();
+
+    location.reload();
+
+  }
+
+
+  /*
+   * CHECK EXISTING LOGIN
+   */
+
+  async function checkLogin() {
+
+    const { data } =
+      await supabaseClient.auth.getSession();
+
+
+    if (data.session) {
+
+      await showApp(
+        data.session.user
       );
-
-    },
-
-    {
-
-      enableHighAccuracy: true,
-
-      timeout: 10000,
-
-      maximumAge: 0
 
     }
 
-  );
+  }
 
-}
+
+  checkLogin();
 
 </script>
 
 </body>
+
 </html>
